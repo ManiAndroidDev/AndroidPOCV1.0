@@ -6,9 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by admin on 08/12/15.
- */
+
 public class Country {
     @SerializedName("title")
     @Expose

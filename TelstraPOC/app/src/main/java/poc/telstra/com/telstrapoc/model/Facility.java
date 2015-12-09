@@ -3,9 +3,7 @@ package poc.telstra.com.telstrapoc.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by admin on 08/12/15.
- */
+
 public class Facility {
     @SerializedName("title")
     @Expose

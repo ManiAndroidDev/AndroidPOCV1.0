@@ -20,9 +20,7 @@ import java.util.List;
 import poc.telstra.com.telstrapoc.R;
 import poc.telstra.com.telstrapoc.model.Facility;
 
-/**
- * Created by admin on 08/12/15.
- */
+
 public class FacilityAdapter extends BaseAdapter {
 
 
