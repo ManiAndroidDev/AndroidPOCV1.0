@@ -2,6 +2,7 @@ package poc.telstra.com.telstrapoc.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.utils.L;
 
 import java.util.List;
 
@@ -36,12 +38,13 @@ public class FacilityAdapter extends BaseAdapter {
         mImageLoader = ImageLoader.getInstance();
         DisplayImageOptions imgOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
-                .showImageOnLoading(android.R.color.transparent)
+                .showImageOnLoading(R.drawable.default_image)
                 .build();
         ImageLoaderConfiguration imgConfig = new ImageLoaderConfiguration.Builder(mContext)
                 .defaultDisplayImageOptions(imgOptions)
                 .build();
         mImageLoader.init(imgConfig);
+        L.writeLogs(false);
     }
 
 
@@ -92,9 +95,13 @@ public class FacilityAdapter extends BaseAdapter {
                 viewHolder.title.setText(facility.getTitle());
                 viewHolder.description.setText(facility.getDescription());
 
-                viewHolder.imageView.setTag(facility.getImageHref());
-
-                mImageLoader.displayImage(facility.getImageHref(), viewHolder.imageView);
+                String imageHref = facility.getImageHref();
+                if (!TextUtils.isEmpty(imageHref)) {
+                    viewHolder.imageView.setTag(imageHref);
+                    mImageLoader.displayImage(imageHref, viewHolder.imageView);
+                } else {
+                    viewHolder.imageView.setImageResource(R.drawable.default_image);
+                }
             }
 
 

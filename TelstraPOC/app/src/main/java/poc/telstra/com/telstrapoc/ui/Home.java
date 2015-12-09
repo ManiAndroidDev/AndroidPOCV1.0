@@ -22,7 +22,7 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class Home extends Activity implements Callback<Country> ,OnRefreshListener{
+public class Home extends Activity implements Callback<Country>, OnRefreshListener {
 
     private FacilityAdapter mFacilityAdapter;
     private PullToRefreshLayout mPullToRefreshLayout;
@@ -46,7 +46,7 @@ public class Home extends Activity implements Callback<Country> ,OnRefreshListen
      * Method to initialize the class variables
      */
     private void initialize() {
-        mPullToRefreshLayout= (PullToRefreshLayout)findViewById(R.id.pull_to_refresh_layout);
+        mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.pull_to_refresh_layout);
         ActionBarPullToRefresh.from(this)
                 // Mark All Children as pullable
                 .allChildrenArePullable()
@@ -82,7 +82,6 @@ public class Home extends Activity implements Callback<Country> ,OnRefreshListen
 
 
     /**
-     *
      * Callback method upon success over network operations
      *
      * @param response
@@ -93,13 +92,20 @@ public class Home extends Activity implements Callback<Country> ,OnRefreshListen
         mPullToRefreshLayout.setRefreshComplete();
         toggleLoading(false);
 
-        if(response!=null && response.body()!=null) {
-            if(!TextUtils.isEmpty(response.body().getTitle())) {
-                getActionBar().setTitle(response.body().getTitle());
-            }
-            if(response.body().getRows()!=null && response.body().getRows().size()>0) {
-                mFacilityAdapter = new FacilityAdapter(Home.this, response.body().getRows());
-                mCountryDetailList.setAdapter(mFacilityAdapter);
+        if (response != null) {
+
+            Country countryItem = response.body();
+            if (countryItem != null) {
+                if (!TextUtils.isEmpty(countryItem.getTitle())) {
+                    getActionBar().setTitle(response.body().getTitle());
+                }
+                if (countryItem.getRows() != null && countryItem.getRows().size() > 0) {
+                    mFacilityAdapter = new FacilityAdapter(Home.this, countryItem.getRows());
+                    mCountryDetailList.setAdapter(mFacilityAdapter);
+                } else {
+                    //No data available
+                    showErrorMessage();
+                }
             } else {
                 //No data available
                 showErrorMessage();
@@ -111,10 +117,12 @@ public class Home extends Activity implements Callback<Country> ,OnRefreshListen
     }
 
     private void showErrorMessage() {
-        Toast.makeText(getApplicationContext(),"Error Occurred",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.error_message), Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Callback method upon failure over network operation
+     *
      * @param throwable
      */
     @Override
@@ -132,13 +140,14 @@ public class Home extends Activity implements Callback<Country> ,OnRefreshListen
 
     /**
      * Method to toggle the UI according to network operations
+     *
      * @param isLoading
      */
     public void toggleLoading(boolean isLoading) {
-        if(isLoading) {
+        if (isLoading) {
             mProgressBar.setVisibility(View.VISIBLE);
             mCountryDetailList.setVisibility(View.INVISIBLE);
-    } else {
+        } else {
             mProgressBar.setVisibility(View.INVISIBLE);
             mCountryDetailList.setVisibility(View.VISIBLE);
         }

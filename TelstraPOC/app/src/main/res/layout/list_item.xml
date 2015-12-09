@@ -29,6 +29,7 @@
         android:maxHeight="200dp"
         android:maxWidth="200dp"
         android:id="@+id/image"
+        android:src="@drawable/default_image"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/more_info"/>
     <ImageView
